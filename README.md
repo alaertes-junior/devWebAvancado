@@ -4,7 +4,8 @@ Repositório para desenvolvimento do trabalho semestral da disciplina de Desenvo
 Dependências:
 
 ```dotnet add package Microsoft.EntityFrameWorkCore.Sqlite```
-dotnet tool install --global dotnet-ef
+
+```dotnet tool install --global dotnet-ef```
 
 //EXECUTAR APÓS A MODELAGEM DE SEU RESPECTIVO MODEL
 dotnet add package Microsoft.EntityFrameWorkCore.Tools
