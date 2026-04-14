@@ -8,7 +8,7 @@ Dependências:
 ```dotnet tool install --global dotnet-ef```
 
 //EXECUTAR APÓS A MODELAGEM DE SEU RESPECTIVO MODEL
-dotnet add package Microsoft.EntityFrameWorkCore.Tools
+```dotnet add package Microsoft.EntityFrameWorkCore.Tools```
 
 
 Para criar os arquivos de CONTROLLER e REPOSITORY seguir os padrões existentes nos arquivos já criados.
