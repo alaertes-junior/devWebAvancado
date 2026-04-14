@@ -1,0 +1,6 @@
+@devWebAvancado_HostAddress = http://localhost:5195
+
+GET {{devWebAvancado_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
