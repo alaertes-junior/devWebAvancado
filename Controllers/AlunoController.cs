@@ -8,7 +8,7 @@ namespace devWebAvancado.Controllers {
     public class AlunoController : ControllerBase {
         private readonly IAlunoRepository _Repo;
 
-        public AlunoController(IAlunoRepository Repo){
+        public AlunoController(IAlunoRepository Repo) {
             _Repo = Repo;
         }
 
