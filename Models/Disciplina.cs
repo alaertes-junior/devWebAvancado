@@ -1,6 +1,6 @@
 namespace devWebAvancado.Models
 {
-    public class Curso
+    public class Disciplina
     {
         
     }
