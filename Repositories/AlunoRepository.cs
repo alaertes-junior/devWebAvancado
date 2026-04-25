@@ -11,15 +11,15 @@ namespace devWebAvancado.Repositories {
         }
 
         public List<Aluno> GetAll() {
-            return _Context.Aluno.ToList();
+            return _Context.Alunos.ToList();
         }
 
         public List<Aluno> GetAllByCourse(int Id) {
-            return _Context.Aluno.Where(A => A.CursoId == Id).ToList();
+            return _Context.Alunos.Where(A => A.CursoId == Id).ToList();
         }
 
         public Aluno GetById(int Id) {
-            return _Context.Aluno.Find(Id);
+            return _Context.Alunos.Find(Id);
         }
 
         public void Add(Aluno Aluno) {
@@ -28,22 +28,28 @@ namespace devWebAvancado.Repositories {
             
             if (Aluno.Nome.Length < 3 || Aluno.Nome.Length > 40)
                 throw new Exception("O nome deve ter entre 3 a 40 caracteres.");
+
+            _Context.Alunos.Add(Aluno);
+            _Context.SaveChanges();
         }
         
         public void Update(Aluno Aluno) {
-            var Existente = _Context.Aluno.Find(Aluno.Id);
+            var Existente = _Context.Alunos.Find(Aluno.Id);
 
             if (Existente == null)
                 return;
 
             Existente.Nome = Aluno.Nome;
             Existente.Nota = Aluno.Nota;
+
+            _Context.SaveChanges();
         }
 
         public void Delete(int Id) {
-            var Aluno = _Context.Aluno.Find(Id);
+            var Aluno = _Context.Alunos.Find(Id);
             if (Aluno != null) {
-                _Context.Aluno.Remove(Aluno);
+                _Context.Alunos.Remove(Aluno);
+                _Context.SaveChanges();
             }
         }
     }
