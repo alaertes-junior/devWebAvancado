@@ -10,6 +10,7 @@ namespace devWebAvancado.Data
         public DbSet<Professor> Professores { get; set; }
         public DbSet<Nota> Notas { get; set; }
         public DbSet<Frequencia> Frequencias { get; set; }
+        public DbSet<Presenca> Presencas { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
