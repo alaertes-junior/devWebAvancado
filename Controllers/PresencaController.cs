@@ -5,29 +5,30 @@ using devWebAvancado.Repositories;
 namespace devWebAvancado.Controllers
 {
     [ApiController]
-    [Route("api/Presenca")]
+    [Route("api/[controller]")]
     public class PresencaController : ControllerBase
     {
-        private readonly IPresencaRepository _Repo;
+        private readonly IPresencaRepository _repo;
 
-        public PresencaController(IPresencaRepository Repo)
+        public PresencaController(IPresencaRepository repo)
         {
-            _Repo = Repo;
+            _repo = repo;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_Repo.GetAll());
+            return Ok(_repo.GetAll());
         }
 
         [HttpGet("aluno/{alunoId}")]
         public IActionResult GetByAlunoId(int alunoId)
         {
-            var presencas = _Repo.GetByAlunoId(alunoId);
-
+            var presencas = _repo.GetByAlunoId(alunoId);
             if (!presencas.Any())
+            {
                 return NotFound("Nenhum registro de presença encontrado para este aluno.");
+            }
 
             return Ok(presencas);
         }
@@ -35,10 +36,11 @@ namespace devWebAvancado.Controllers
         [HttpGet("aluno/{alunoId}/disciplina/{disciplinaId}")]
         public IActionResult GetByAlunoIdDisciplinaId(int alunoId, int disciplinaId)
         {
-            var presencas = _Repo.GetByAlunoIdDisciplinaId(alunoId, disciplinaId);
-
+            var presencas = _repo.GetByAlunoIdDisciplinaId(alunoId, disciplinaId);
             if (!presencas.Any())
+            {
                 return NotFound("Nenhum registro de presença encontrado para este aluno nesta disciplina.");
+            }
 
             return Ok(presencas);
         }
@@ -46,15 +48,12 @@ namespace devWebAvancado.Controllers
         [HttpGet("faltas/{alunoId}/{disciplinaId}")]
         public IActionResult GetPercentualFaltas(int alunoId, int disciplinaId)
         {
-            var (PercentualFaltas, AlertaReprovacao) = _Repo.GetPercentualFaltas(alunoId, disciplinaId);
-
+            var (percentualFaltas, alertaReprovacao) = _repo.GetPercentualFaltas(alunoId, disciplinaId);
             return Ok(new
             {
-                PercentualFaltas = PercentualFaltas,
-                AlertaReprovacao = AlertaReprovacao,
-                Mensagem = AlertaReprovacao
-                    ? "ALERTA: Aluno em risco de reprovação por falta (>= 25% de ausências)."
-                    : "Aluno dentro do limite de faltas permitido."
+                PercentualFaltas = percentualFaltas,
+                AlertaReprovacao = alertaReprovacao,
+                Mensagem = alertaReprovacao ? "ALERTA: Aluno em risco de reprovação por falta (>= 25% de ausências)." : "Aluno dentro do limite de faltas permitido."
             });
         }
 
@@ -63,7 +62,7 @@ namespace devWebAvancado.Controllers
         {
             try
             {
-                _Repo.Add(presenca);
+                _repo.Add(presenca);
                 return Ok(presenca);
             }
             catch (Exception ex)
@@ -78,7 +77,7 @@ namespace devWebAvancado.Controllers
             try
             {
                 presenca.Id = id;
-                _Repo.Update(presenca);
+                _repo.Update(presenca);
                 return Ok("Registro de presença atualizado com sucesso.");
             }
             catch (Exception ex)
@@ -92,7 +91,7 @@ namespace devWebAvancado.Controllers
         {
             try
             {
-                _Repo.Delete(id);
+                _repo.Delete(id);
                 return Ok("Registro de presença removido com sucesso.");
             }
             catch (Exception ex)

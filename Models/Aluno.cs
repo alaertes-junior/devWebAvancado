@@ -1,18 +1,15 @@
-// model aluno 
 namespace devWebAvancado.Models
 {
     public class Aluno
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public int Cpf { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Cpf { get; set; } = string.Empty;
         public int Idade { get; set; }
-        public int CursoId { get; set; }
-        public Curso Curso { get; set; }
-        public int FrequenciaId { get; set; }
-        public Frequencia Frequencia { get; set; }
-        public int NotaId { get; set; }
-        public Nota Nota { get; set; }
+        
+        public ICollection<Disciplina> Disciplinas { get; set; } = new List<Disciplina>();
+        public ICollection<Nota> Notas { get; set; } = new List<Nota>();
+        public ICollection<Presenca> Presencas { get; set; } = new List<Presenca>();
     }
 }

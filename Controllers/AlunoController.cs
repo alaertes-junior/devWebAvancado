@@ -1,63 +1,79 @@
-// aluno controller
 using Microsoft.AspNetCore.Mvc;
 using devWebAvancado.Models;
 using devWebAvancado.Repositories;
 
-namespace devWebAvancado.Controllers {
+namespace devWebAvancado.Controllers
+{
     [ApiController]
-    [Route("api/Aluno")]
-    public class AlunoController : ControllerBase {
-        private readonly IAlunoRepository _Repo;
+    [Route("api/[controller]")]
+    public class AlunoController : ControllerBase
+    {
+        private readonly IAlunoRepository _repo;
 
-        public AlunoController(IAlunoRepository Repo) {
-            _Repo = Repo;
+        public AlunoController(IAlunoRepository repo)
+        {
+            _repo = repo;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
-            return Ok(_Repo.GetAll());
+            return Ok(_repo.GetAll());
         }
 
-        [HttpGet("{Id}")]
-        public IActionResult GetById(int Id)
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
         {
-            var Aluno = _Repo.GetById(Id);
-
-            if (Aluno == null)
+            var aluno = _repo.GetById(id);
+            if (aluno == null)
+            {
                 return NotFound("Aluno não encontrado");
+            }
 
-            return Ok(Aluno);
+            return Ok(aluno);
         }
 
         [HttpPost]
-        public IActionResult Post(Aluno Aluno)
+        public IActionResult Post(Aluno aluno)
         {
             try
             {
-                _Repo.Add(Aluno);
-                return Ok(Aluno);
+                _repo.Add(aluno);
+                return Ok(aluno);
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                return BadRequest(Ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpPut("{Id}")]
-        public IActionResult Put(int Id, Aluno Aluno)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Aluno aluno)
         {
-            Aluno.Id = Id;
-            _Repo.Update(Aluno);
-
+            aluno.Id = id;
+            _repo.Update(aluno);
             return Ok("Aluno atualizado com sucesso");
         }
 
-        [HttpDelete("{Id}")]
-        public IActionResult Delete(int Id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            _Repo.Delete(Id);
+            _repo.Delete(id);
             return Ok("Aluno removido com sucesso");
+        }
+
+        [HttpPost("{alunoId}/matricular/{disciplinaId}")]
+        public IActionResult PostMatricula(int alunoId, int disciplinaId)
+        {
+            try
+            {
+                _repo.Matricular(alunoId, disciplinaId);
+                return Ok("Matrícula realizada com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

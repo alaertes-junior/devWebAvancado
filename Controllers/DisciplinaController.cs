@@ -2,70 +2,70 @@ using Microsoft.AspNetCore.Mvc;
 using devWebAvancado.Models;
 using devWebAvancado.Repositories;
 
-namespace devWebAvancado.Controllers {
+namespace devWebAvancado.Controllers
+{
     [ApiController]
     [Route("api/[controller]")]
-    public class DisciplinaController : ControllerBase {
+    public class DisciplinaController : ControllerBase
+    {
         private readonly IDisciplinaRepository _repo;
 
-        public DisciplinaController(IDisciplinaRepository repo) {
+        public DisciplinaController(IDisciplinaRepository repo)
+        {
             _repo = repo;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             return Ok(_repo.GetAll());
         }
 
-        [HttpGet("{Id}")]
-        public IActionResult GetById(int Id)
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
         {
-            var disciplina = _repo.GetById(Id);
-
+            var disciplina = _repo.GetById(id);
             if (disciplina == null)
+            {
                 return NotFound("Disciplina não encontrada");
+            }
 
             return Ok(disciplina);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Disciplina disciplina)
+        public IActionResult Post(Disciplina disciplina)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
                 _repo.Add(disciplina);
                 return Ok(disciplina);
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                return BadRequest(Ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpPut("{Id}")]
-        public IActionResult Put(int Id, [FromBody] Disciplina disciplina)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Disciplina disciplina)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                disciplina.Id = id;
+                _repo.Update(disciplina);
+                return Ok("Disciplina atualizada com sucesso");
             }
-
-            disciplina.Id = Id;
-            _repo.Update(disciplina);
-
-            return Ok("Disciplina atualizada com sucesso");
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpDelete("{Id}")]
-        public IActionResult Delete(int Id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            _repo.Delete(Id);
+            _repo.Delete(id);
             return Ok("Disciplina removida com sucesso");
         }
     }

@@ -6,29 +6,42 @@ namespace devWebAvancado.Repositories
 {
     public class NotaRepository : INotaRepository
     {
-        private readonly AppDbContext _Context;
+        private readonly AppDbContext _context;
 
         public NotaRepository(AppDbContext context)
         {
-            _Context = context;
+            _context = context;
         }
 
-        public List<Nota> GetByIdAluno(int AlunoId)
+        public List<Nota> GetAll()
         {
-            return _Context.Notas.ToList();
+            return _context.Notas.ToList();
         }
 
-        public List<Nota> GetByIdAlunoIdDisciplina(int AlunoId, int DisciplinaId)
+        public Nota? GetById(int id)
         {
-            return _Context.Notas.ToList();
+            return _context.Notas
+                .Include(n => n.Aluno)
+                .Include(n => n.Disciplina)
+                .FirstOrDefault(n => n.Id == id);
         }
 
-        public (double Media, StatusDisciplina Status) GetMediaByIdAlunoIdDisciplina(int AlunoId, int DisciplinaId)
+        public List<Nota> GetByIdAluno(int alunoId)
         {
-            var consulta = _Context.Notas.Where(n => n.AlunoId == AlunoId && n.DisciplinaId == DisciplinaId);
+            return _context.Notas.Where(n => n.AlunoId == alunoId).ToList();
+        }
+
+        public List<Nota> GetByIdAlunoIdDisciplina(int alunoId, int disciplinaId)
+        {
+            return _context.Notas.Where(n => n.AlunoId == alunoId && n.DisciplinaId == disciplinaId).ToList();
+        }
+
+        public (double Media, StatusDisciplina Status) GetMediaByIdAlunoIdDisciplina(int alunoId, int disciplinaId)
+        {
+            var consulta = _context.Notas.Where(n => n.AlunoId == alunoId && n.DisciplinaId == disciplinaId);
             if (!consulta.Any())
             {
-                return (0, StatusDisciplina.Reprovado);                
+                return (0, StatusDisciplina.Reprovado);
             }
 
             double media = consulta.Average(n => n.Valor);
@@ -43,36 +56,35 @@ namespace devWebAvancado.Repositories
                 throw new Exception("A nota deve estar entre 0 e 10.");
             }
 
-            _Context.Notas.Add(nota);
-            _Context.SaveChanges();
+            _context.Notas.Add(nota);
+            _context.SaveChanges();
         }
 
         public void Update(Nota nota)
         {
-            var existente = _Context.Notas.Find(nota.Id);
-            if (existente == null) 
+            var existente = _context.Notas.Find(nota.Id);
+            if (existente == null)
             {
                 return;
             }
-            
+
             if (nota.Valor < 0 || nota.Valor > 10)
             {
                 throw new Exception("A nota deve estar entre 0 e 10.");
             }
 
             existente.Valor = nota.Valor;
-            _Context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var nota = _Context.Notas.Find(id);
-            if (nota == null)
+            var nota = _context.Notas.Find(id);
+            if (nota != null)
             {
-                return;
+                _context.Notas.Remove(nota);
+                _context.SaveChanges();
             }
-            _Context.Notas.Remove(nota);
-            _Context.SaveChanges();
         }
     }
 }

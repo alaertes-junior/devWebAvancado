@@ -5,55 +5,51 @@ using devWebAvancado.Repositories;
 namespace devWebAvancado.Controllers
 {
     [ApiController]
-    [Route("api/Nota")]
+    [Route("api/[controller]")]
     public class NotaController : ControllerBase
     {
-        private readonly INotaRepository _Repo;
+        private readonly INotaRepository _repo;
 
-        public NotaController(INotaRepository Repo)
+        public NotaController(INotaRepository repo)
         {
-            _Repo = Repo;
+            _repo = repo;
         }
 
-        // GET Nota by ID Aluno
-        [HttpGet("{Id}")]
-        public IActionResult GetByIdAluno(int Id)
+        [HttpGet("aluno/{alunoId}")]
+        public IActionResult GetByAlunoId(int alunoId)
         {
-            return Ok(_Repo.GetByIdAluno(Id));
+            return Ok(_repo.GetByIdAluno(alunoId));
         }
 
-        // GET Nota by ID Aluno & ID Disciplina
-        [HttpGet("{IdAluno}/{IdDisciplina}")]
-        public IActionResult GetByIdAlunoIdDisciplina(int IdAluno, int IdDisciplina)
+        [HttpGet("aluno/{alunoId}/disciplina/{disciplinaId}")]
+        public IActionResult GetByAlunoIdDisciplinaId(int alunoId, int disciplinaId)
         {
-            var nota = _Repo.GetByIdAlunoIdDisciplina(IdAluno, IdDisciplina);
-
+            var nota = _repo.GetByIdAlunoIdDisciplina(alunoId, disciplinaId);
             if (nota == null)
-                return NotFound($"Nenhuma nota encontrada para o Aluno {IdAluno} na Disciplina {IdDisciplina}");
+            {
+                return NotFound($"Nenhuma nota encontrada para o Aluno {alunoId} na Disciplina {disciplinaId}");
+            }
 
             return Ok(nota);
         }
 
-        // GET Media do Aluno por Disciplina
-        [HttpGet("/Media/{IdAluno}/{IdDisciplina}")]
-        public IActionResult GetMedia(int IdAluno, int IdDisciplina)
+        [HttpGet("media/{alunoId}/{disciplinaId}")]
+        public IActionResult GetMedia(int alunoId, int disciplinaId)
         {
-            var (Media, Status) = _Repo.GetMediaByIdAlunoIdDisciplina(IdAluno, IdDisciplina);
-
-            return Ok(new 
-            { 
-                MediaFinal = Media, 
-                Situacao = Status.ToString() 
+            var (media, status) = _repo.GetMediaByIdAlunoIdDisciplina(alunoId, disciplinaId);
+            return Ok(new
+            {
+                MediaFinal = media,
+                Situacao = status.ToString()
             });
         }
 
-        // POST Inserção de Nota
         [HttpPost]
         public IActionResult Post(Nota nota)
         {
             try
             {
-                _Repo.Add(nota);
+                _repo.Add(nota);
                 return Ok(nota);
             }
             catch (Exception ex)
@@ -62,21 +58,18 @@ namespace devWebAvancado.Controllers
             }
         }
 
-        // PUT Alteração de Nota via Id da Nota
-        [HttpPut("{Id}")]
-        public IActionResult Put(int Id, Nota Nota)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Nota nota)
         {
-            Nota.Id = Id;
-            _Repo.Update(Nota);
-
+            nota.Id = id;
+            _repo.Update(nota);
             return Ok("Nota atualizada com sucesso");
         }
 
-        // DELETE Deletar Nota
-        [HttpDelete("{Id}")]
-        public IActionResult Delete(int Id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            _Repo.Delete(Id);
+            _repo.Delete(id);
             return Ok("Nota removida com sucesso");
         }
     }

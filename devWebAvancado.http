@@ -1,6 +1,75 @@
 @devWebAvancado_HostAddress = http://localhost:5195
 
-GET {{devWebAvancado_HostAddress}}/weatherforecast/
-Accept: application/json
+@devWebAvancado_HostAddress = http://localhost:5195
+
+### 1. Criar Disciplina (Dependência para Aluno)
+POST {{devWebAvancado_HostAddress}}/api/Disciplina
+Content-Type: application/json
+
+{
+  "nome": "Desenvolvimento Web Avançado",
+  "cargaHoraria": 80,
+  "nivel": "Avançado",
+  "professorId": 1
+}
 
 ###
+
+### 2. Criar Professor (Independente)
+POST {{devWebAvancado_HostAddress}}/api/Professor
+Content-Type: application/json
+
+{
+  "nome": "João Silva",
+  "email": "joao.silva@faculdade.edu.br",
+  "cpf": "123.456.789-00",
+  "departamento": "Ciência da Computação"
+}
+
+###
+
+### 3. Criar Aluno (Depende da Disciplina existir - Idade entre 6 e 17)
+POST {{devWebAvancado_HostAddress}}/api/Aluno
+Content-Type: application/json
+
+{
+  "nome": "Maria Souza",
+  "email": "maria.souza@aluno.edu.br",
+  "cpf": "987.654.321-11",
+  "idade": 16,
+  "disciplinaId": 1,
+  "frequenciaId": 0,
+  "presencaId": 0,
+  "notaId": 0
+}
+
+###
+
+### 4. Criar Nota (Depende do Aluno e Disciplina)
+POST {{devWebAvancado_HostAddress}}/api/Nota
+Content-Type: application/json
+
+{
+  "valor": 8.5,
+  "descricao": "Prova do Primeiro Bimestre",
+  "alunoId": 1,
+  "disciplinaId": 1
+}
+
+###
+
+### 5. Criar Presença (Depende do Aluno e Disciplina)
+POST {{devWebAvancado_HostAddress}}/api/Presenca
+Content-Type: application/json
+
+{
+  "alunoId": 1,
+  "disciplinaId": 1,
+  "dataAula": "2026-04-26T19:00:00",
+  "presente": true
+}
+
+###
+
+### 6. Matricular Aluno em uma Segunda Disciplina (Muitos para Muitos)
+POST {{devWebAvancado_HostAddress}}/api/Aluno/1/matricular/2

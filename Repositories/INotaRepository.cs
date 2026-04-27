@@ -1,10 +1,11 @@
 using devWebAvancado.Models;
-public enum StatusDisciplina { Aprovado, Reprovado };
 
 namespace devWebAvancado.Repositories
 {
     public interface INotaRepository
     {
+        List<Nota> GetAll();
+        Nota? GetById(int id);
         List<Nota> GetByIdAluno(int alunoId);
         List<Nota> GetByIdAlunoIdDisciplina(int alunoId, int disciplinaId);
         (double Media, StatusDisciplina Status) GetMediaByIdAlunoIdDisciplina(int alunoId, int disciplinaId);
