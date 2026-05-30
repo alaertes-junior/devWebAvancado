@@ -1,0 +1,12 @@
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.main-content {
+  flex-grow: 1;
+  margin-left: 260px; /* offset the fixed sidebar */
+  background-color: #ffffff;
+  padding: 40px;
+}

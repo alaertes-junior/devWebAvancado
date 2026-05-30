@@ -1,0 +1,84 @@
+.page-header-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.page-header-title-area {
+  margin-bottom: 30px;
+}
+
+.page-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  width: 300px;
+  padding: 10px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  color: #374151;
+  font-family: inherit;
+}
+
+.search-box input::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filter-select {
+  padding: 10px 16px;
+  border: 1px solid #305677;
+  border-radius: 8px;
+  background-color: #305677;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+.filter-select:hover {
+  background-color: #24425c;
+}
+
+.btn-add {
+  background-color: #305677;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-add:hover {
+  background-color: #24425c;
+}
+
+.plus-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
