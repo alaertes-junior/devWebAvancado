@@ -1,0 +1,183 @@
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.no-data {
+  color: #64748b;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.aluno-card-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.aluno-group-nome {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1e293b;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.summary-box {
+  background-color: #f1f5f9;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+.summary-status {
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.summary-status.aprovado {
+  color: #10b981;
+}
+
+.summary-status.reprovado {
+  color: #ef4444;
+}
+
+.itens-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.disciplina-nome {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #305677;
+}
+
+.item-desc {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nota-badge {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: white;
+  min-width: 45px;
+  text-align: center;
+}
+
+.nota-badge.aprovado {
+  background-color: #10b981;
+}
+
+.nota-badge.reprovado {
+  background-color: #ef4444;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+.disciplina-tag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.nota-id {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nota-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aluno-nome {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.nota-desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.nota-valor {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.nota-valor.aprovado {
+  color: #16a34a; /* verde */
+}
+
+.nota-valor.reprovado {
+  color: #dc2626; /* vermelho */
+}

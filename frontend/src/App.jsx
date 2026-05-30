@@ -1,35 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import MainLayout from "./layouts/MainLayout";
+import Professores from "./pages/Professores/Professores";
+import Disciplinas from "./pages/Disciplinas/Disciplinas";
+import Alunos from "./pages/Alunos/Alunos";
+import Notas from "./pages/Notas/Notas";
+import Frequencia from "./pages/Frequencia/Frequencia";
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [activePage, setActivePage] = useState('Professores');
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <MainLayout activePage={activePage} setActivePage={setActivePage}>
+      {activePage === 'Professores' && <Professores />}
+      {activePage === 'Disciplinas' && <Disciplinas />}
+      {activePage === 'Alunos' && <Alunos />}
+      {activePage === 'Notas' && <Notas />}
+      {activePage === 'Frequência' && <Frequencia />}
+    </MainLayout>
   )
 }
 
-export default App
+export default App;

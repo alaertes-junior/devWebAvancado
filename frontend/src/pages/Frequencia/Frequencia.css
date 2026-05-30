@@ -1,0 +1,138 @@
+.freq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.data-tag {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #334155;
+  background-color: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.aluno-card-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.aluno-group-nome {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1e293b;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.summary-box {
+  background-color: #f1f5f9;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+.summary-status {
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.summary-status.aprovado {
+  color: #10b981;
+}
+
+.summary-status.reprovado {
+  color: #ef4444;
+}
+
+.itens-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.disciplina-nome {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #305677;
+}
+
+.item-desc {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.freq-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.freq-desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.presente {
+  background-color: #dcfce3;
+  color: #166534;
+}
+
+.status-badge.falta {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.modal-select {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: white;
+  cursor: pointer;
+}
+
+.modal-select:focus {
+  border-color: #305677;
+  outline: none;
+}
