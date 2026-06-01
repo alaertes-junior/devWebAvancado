@@ -75,3 +75,5 @@ appsettings.Development.json
 # Rider
 .idea/
 *.sln.iml
+
+*.claude
