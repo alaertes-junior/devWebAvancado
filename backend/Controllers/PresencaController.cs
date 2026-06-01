@@ -33,6 +33,12 @@ namespace devWebAvancado.Controllers
             return Ok(presencas);
         }
 
+        [HttpGet("disciplina/{id}")]
+        public IActionResult GetByDisciplinaId(int id)
+        {
+            return Ok(_repo.GetByDisciplinaId(id));
+        }
+
         [HttpGet("aluno/{alunoId}/disciplina/{disciplinaId}")]
         public IActionResult GetByAlunoIdDisciplinaId(int alunoId, int disciplinaId)
         {
@@ -53,7 +59,7 @@ namespace devWebAvancado.Controllers
             {
                 PercentualFaltas = percentualFaltas,
                 AlertaReprovacao = alertaReprovacao,
-                Mensagem = alertaReprovacao ? "ALERTA: Aluno em risco de reprovação por falta (>= 25% de ausências)." : "Aluno dentro do limite de faltas permitido."
+                Mensagem = alertaReprovacao ? "Aluno em risco de reprovação por falta." : "Aluno dentro do limite de faltas permitido."
             });
         }
 

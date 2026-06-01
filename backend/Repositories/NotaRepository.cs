@@ -15,20 +15,56 @@ namespace devWebAvancado.Repositories
 
         public List<Nota> GetAll()
         {
-            return _context.Notas.ToList();
+            var notas = _context.Notas
+                .Include(n => n.Aluno)
+                .Include(n => n.Disciplina)
+                .AsNoTracking()
+                .ToList();
+
+            foreach (var n in notas)
+            {
+                if (n.Aluno != null) { n.Aluno.Notas = null!; n.Aluno.Presencas = null!; n.Aluno.Disciplinas = null!; }
+                if (n.Disciplina != null) { n.Disciplina.Notas = null!; n.Disciplina.Presencas = null!; n.Disciplina.Alunos = null!; }
+            }
+            return notas;
         }
 
         public Nota? GetById(int id)
         {
-            return _context.Notas
+            var nota = _context.Notas
                 .Include(n => n.Aluno)
                 .Include(n => n.Disciplina)
+                .AsNoTracking()
                 .FirstOrDefault(n => n.Id == id);
+                
+            if (nota != null)
+            {
+                if (nota.Aluno != null) { nota.Aluno.Notas = null!; nota.Aluno.Presencas = null!; nota.Aluno.Disciplinas = null!; }
+                if (nota.Disciplina != null) { nota.Disciplina.Notas = null!; nota.Disciplina.Presencas = null!; nota.Disciplina.Alunos = null!; }
+            }
+            return nota;
         }
 
         public List<Nota> GetByIdAluno(int alunoId)
         {
             return _context.Notas.Where(n => n.AlunoId == alunoId).ToList();
+        }
+
+        public List<Nota> GetByDisciplinaId(int disciplinaId)
+        {
+            var notas = _context.Notas
+                .Where(n => n.DisciplinaId == disciplinaId)
+                .Include(n => n.Aluno)
+                .Include(n => n.Disciplina)
+                .AsNoTracking()
+                .ToList();
+
+            foreach (var n in notas)
+            {
+                if (n.Aluno != null) { n.Aluno.Notas = null!; n.Aluno.Presencas = null!; n.Aluno.Disciplinas = null!; }
+                if (n.Disciplina != null) { n.Disciplina.Notas = null!; n.Disciplina.Presencas = null!; n.Disciplina.Alunos = null!; }
+            }
+            return notas;
         }
 
         public List<Nota> GetByIdAlunoIdDisciplina(int alunoId, int disciplinaId)

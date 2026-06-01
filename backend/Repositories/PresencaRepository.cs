@@ -16,17 +16,56 @@ namespace devWebAvancado.Repositories
 
         public List<Presenca> GetAll()
         {
-            return _context.Presencas.ToList();
+            var presencas = _context.Presencas
+                .Include(p => p.Aluno)
+                .Include(p => p.Disciplina)
+                .AsNoTracking()
+                .ToList();
+                
+            foreach (var p in presencas)
+            {
+                if (p.Aluno != null) { p.Aluno.Notas = null!; p.Aluno.Presencas = null!; p.Aluno.Disciplinas = null!; }
+                if (p.Disciplina != null) { p.Disciplina.Notas = null!; p.Disciplina.Presencas = null!; p.Disciplina.Alunos = null!; }
+            }
+            return presencas;
         }
 
         public Presenca? GetById(int id)
         {
-            return _context.Presencas.FirstOrDefault(p => p.Id == id);
+            var presenca = _context.Presencas
+                .Include(p => p.Aluno)
+                .Include(p => p.Disciplina)
+                .AsNoTracking()
+                .FirstOrDefault(p => p.Id == id);
+                
+            if (presenca != null)
+            {
+                if (presenca.Aluno != null) { presenca.Aluno.Notas = null!; presenca.Aluno.Presencas = null!; presenca.Aluno.Disciplinas = null!; }
+                if (presenca.Disciplina != null) { presenca.Disciplina.Notas = null!; presenca.Disciplina.Presencas = null!; presenca.Disciplina.Alunos = null!; }
+            }
+            return presenca;
         }
 
         public List<Presenca> GetByAlunoId(int alunoId)
         {
             return _context.Presencas.Where(p => p.AlunoId == alunoId).ToList();
+        }
+
+        public List<Presenca> GetByDisciplinaId(int disciplinaId)
+        {
+            var presencas = _context.Presencas
+                .Where(p => p.DisciplinaId == disciplinaId)
+                .Include(p => p.Aluno)
+                .Include(p => p.Disciplina)
+                .AsNoTracking()
+                .ToList();
+                
+            foreach (var p in presencas)
+            {
+                if (p.Aluno != null) { p.Aluno.Notas = null!; p.Aluno.Presencas = null!; p.Aluno.Disciplinas = null!; }
+                if (p.Disciplina != null) { p.Disciplina.Notas = null!; p.Disciplina.Presencas = null!; p.Disciplina.Alunos = null!; }
+            }
+            return presencas;
         }
 
         public List<Presenca> GetByAlunoIdDisciplinaId(int alunoId, int disciplinaId)

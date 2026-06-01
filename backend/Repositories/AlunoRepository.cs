@@ -15,19 +15,12 @@ namespace devWebAvancado.Repositories
 
         public List<Aluno> GetAll()
         {
-            return _context.Alunos
-                .Include(a => a.Disciplinas)
-                .Include(a => a.Notas)
-                .Include(a => a.Presencas)
-                .ToList();
+            return _context.Alunos.ToList();
         }
 
         public List<Aluno> GetAllByCourse(int id)
         {
             return _context.Alunos
-                .Include(a => a.Disciplinas)
-                .Include(a => a.Notas)
-                .Include(a => a.Presencas)
                 .Where(a => a.Disciplinas.Any(d => d.Id == id))
                 .ToList();
         }
@@ -35,9 +28,6 @@ namespace devWebAvancado.Repositories
         public Aluno? GetById(int id)
         {
             return _context.Alunos
-                .Include(a => a.Disciplinas)
-                .Include(a => a.Notas)
-                .Include(a => a.Presencas)
                 .FirstOrDefault(a => a.Id == id);
         }
 

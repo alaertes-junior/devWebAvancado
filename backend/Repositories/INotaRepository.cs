@@ -7,6 +7,7 @@ namespace devWebAvancado.Repositories
         List<Nota> GetAll();
         Nota? GetById(int id);
         List<Nota> GetByIdAluno(int alunoId);
+        List<Nota> GetByDisciplinaId(int disciplinaId);
         List<Nota> GetByIdAlunoIdDisciplina(int alunoId, int disciplinaId);
         (double Media, StatusDisciplina Status) GetMediaByIdAlunoIdDisciplina(int alunoId, int disciplinaId);
         void Add(Nota nota);
