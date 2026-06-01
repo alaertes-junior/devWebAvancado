@@ -33,6 +33,12 @@ namespace devWebAvancado.Controllers
             return Ok(aluno);
         }
 
+        [HttpGet("disciplina/{id}")]
+        public IActionResult GetByDisciplinaId(int id)
+        {
+            return Ok(_repo.GetAllByCourse(id));
+        }
+
         [HttpPost]
         public IActionResult Post(Aluno aluno)
         {

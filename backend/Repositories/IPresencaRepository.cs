@@ -7,6 +7,7 @@ namespace devWebAvancado.Repositories
         List<Presenca> GetAll();
         Presenca? GetById(int id);
         List<Presenca> GetByAlunoId(int alunoId);
+        List<Presenca> GetByDisciplinaId(int disciplinaId);
         List<Presenca> GetByAlunoIdDisciplinaId(int alunoId, int disciplinaId);
         (double PercentualFaltas, bool AlertaReprovacao) GetPercentualFaltas(int alunoId, int disciplinaId);
         void Add(Presenca presenca);

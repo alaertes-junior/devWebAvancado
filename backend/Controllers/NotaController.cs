@@ -15,10 +15,30 @@ namespace devWebAvancado.Controllers
             _repo = repo;
         }
 
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            return Ok(_repo.GetAll());
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var nota = _repo.GetById(id);
+            if (nota == null) return NotFound();
+            return Ok(nota);
+        }
+
         [HttpGet("aluno/{alunoId}")]
         public IActionResult GetByAlunoId(int alunoId)
         {
             return Ok(_repo.GetByIdAluno(alunoId));
+        }
+
+        [HttpGet("disciplina/{id}")]
+        public IActionResult GetByDisciplinaId(int id)
+        {
+            return Ok(_repo.GetByDisciplinaId(id));
         }
 
         [HttpGet("aluno/{alunoId}/disciplina/{disciplinaId}")]
