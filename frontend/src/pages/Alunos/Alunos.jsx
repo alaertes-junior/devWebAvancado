@@ -7,6 +7,7 @@ import '../Professores/Professores.css';
 export default function Alunos() {
   const [alunos, setAlunos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingAluno, setEditingAluno] = useState(null);
   
   // Estados do formulário
   const [nome, setNome] = useState('');
@@ -86,37 +87,60 @@ export default function Alunos() {
     }
   };
 
+  const handleEditClick = (aluno) => {
+    setEditingAluno(aluno);
+    setNome(aluno.nome);
+    setEmail(aluno.email);
+    setCpf(aluno.cpf);
+    setIdade(aluno.idade.toString());
+    setMensagem({ texto: '', tipo: '' });
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setEditingAluno(null);
+    setNome('');
+    setEmail('');
+    setCpf('');
+    setIdade('');
+    setMensagem({ texto: '', tipo: '' });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMensagem({ texto: '', tipo: '' });
 
-    const novoAluno = {
+    const alunoData = {
       nome: nome,
       email: email,
       cpf: cpf,
-      idade: Number(idade) // Conversão explícita para número, conforme restrições
+      idade: Number(idade)
     };
 
+    if (editingAluno) {
+      alunoData.id = editingAluno.id;
+    }
+
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
+      const url = editingAluno ? `${API_URL}/${editingAluno.id}` : API_URL;
+      const method = editingAluno ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method: method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(novoAluno)
+        body: JSON.stringify(alunoData)
       });
 
       if (response.ok) {
-        setNome('');
-        setEmail('');
-        setCpf('');
-        setIdade('');
-        setIsModalOpen(false);
+        handleClose();
         carregarAlunos();
       } else {
         const erroMsg = await response.text();
         setMensagem({ texto: `Erro: ${erroMsg}`, tipo: 'error' });
       }
     } catch (error) {
-      console.error('Erro no POST:', error);
+      console.error('Erro ao salvar aluno:', error);
       setMensagem({ texto: 'Erro de conexão.', tipo: 'error' });
     }
   };
@@ -155,9 +179,9 @@ export default function Alunos() {
         onFilterChange={handleFilterChange}
       />
 
-      <DataTable columns={columns} data={alunos} onDelete={handleDelete} />
+      <DataTable columns={columns} data={alunos} onEdit={handleEditClick} onDelete={handleDelete} />
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Adicionar aluno(a):">
+      <Modal isOpen={isModalOpen} onClose={handleClose} title={editingAluno ? "Editar aluno(a):" : "Adicionar aluno(a):"}>
         {mensagem.texto && (
           <div className={`form-msg ${mensagem.tipo}`}>{mensagem.texto}</div>
         )}

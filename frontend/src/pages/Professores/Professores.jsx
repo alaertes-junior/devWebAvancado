@@ -7,6 +7,7 @@ import './Professores.css';
 export default function Professores() {
   const [professores, setProfessores] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProfessor, setEditingProfessor] = useState(null);
   
   // Estados do formulário
   const [nome, setNome] = useState('');
@@ -58,37 +59,60 @@ export default function Professores() {
     }
   };
 
+  const handleEditClick = (professor) => {
+    setEditingProfessor(professor);
+    setNome(professor.nome);
+    setEmail(professor.email);
+    setCpf(professor.cpf);
+    setDepartamento(professor.departamento);
+    setMensagem({ texto: '', tipo: '' });
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setEditingProfessor(null);
+    setNome('');
+    setEmail('');
+    setCpf('');
+    setDepartamento('');
+    setMensagem({ texto: '', tipo: '' });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMensagem({ texto: '', tipo: '' });
 
-    const novoProfessor = {
+    const professorData = {
       nome: nome,
       email: email,
       cpf: cpf,
       departamento: departamento
     };
 
+    if (editingProfessor) {
+      professorData.id = editingProfessor.id;
+    }
+
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
+      const url = editingProfessor ? `${API_URL}/${editingProfessor.id}` : API_URL;
+      const method = editingProfessor ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method: method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(novoProfessor)
+        body: JSON.stringify(professorData)
       });
 
       if (response.ok) {
-        setNome('');
-        setEmail('');
-        setCpf('');
-        setDepartamento('');
-        setIsModalOpen(false);
+        handleClose();
         carregarProfessores();
       } else {
         const erroMsg = await response.text();
         setMensagem({ texto: `Erro: ${erroMsg}`, tipo: 'error' });
       }
     } catch (error) {
-      console.error('Erro no POST:', error);
+      console.error('Erro ao salvar professor:', error);
       setMensagem({ texto: 'Erro de conexão.', tipo: 'error' });
     }
   };
@@ -127,10 +151,10 @@ export default function Professores() {
       />
 
       {/* Componente Global de Tabela */}
-      <DataTable columns={columns} data={professores} onDelete={handleDelete} />
+      <DataTable columns={columns} data={professores} onEdit={handleEditClick} onDelete={handleDelete} />
 
       {/* Componente Global de Modal (mantido o conteúdo local do form) */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Adicionar professor:">
+      <Modal isOpen={isModalOpen} onClose={handleClose} title={editingProfessor ? "Editar professor:" : "Adicionar professor:"}>
         {mensagem.texto && (
           <div className={`form-msg ${mensagem.tipo}`}>{mensagem.texto}</div>
         )}

@@ -21,6 +21,17 @@ namespace devWebAvancado.Controllers
             return Ok(_repo.GetAll());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var presenca = _repo.GetById(id);
+            if (presenca == null)
+            {
+                return NotFound("Registro de presença não encontrado.");
+            }
+            return Ok(presenca);
+        }
+
         [HttpGet("aluno/{alunoId}")]
         public IActionResult GetByAlunoId(int alunoId)
         {

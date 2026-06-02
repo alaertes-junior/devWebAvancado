@@ -43,6 +43,8 @@ namespace devWebAvancado.Repositories
             existente.Nome = disciplina.Nome;
             existente.CargaHoraria = disciplina.CargaHoraria;
             existente.Nivel = disciplina.Nivel;
+            existente.ProfessorId = disciplina.ProfessorId;
+            existente.Professor = null; // Forces EF Core to rely on the updated ProfessorId
 
             _context.SaveChanges();
         }

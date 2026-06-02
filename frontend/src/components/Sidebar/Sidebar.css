@@ -9,6 +9,8 @@
   top: 0;
   color: white;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .sidebar-logo {
@@ -21,32 +23,20 @@
 
 .logo-placeholder {
   background-color: white;
-  color: #305677;
   border-radius: 25px;
-  padding: 10px 20px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 700;
+  justify-content: center;
+  max-width: 180px;
+  width: 100%;
 }
 
-.logo-star {
-  font-size: 24px;
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-}
-
-.logo-univ {
-  font-size: 10px;
-  font-weight: 400;
-}
-
-.logo-pos {
-  font-size: 16px;
+.logo-img {
+  max-width: 100%;
+  height: auto;
+  max-height: 38px;
+  display: block;
 }
 
 .sidebar-nav {

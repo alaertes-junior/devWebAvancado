@@ -11,6 +11,7 @@ import '../Professores/Professores.css';
 export default function Disciplinas() {
   const [disciplinas, setDisciplinas] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingDisciplina, setEditingDisciplina] = useState(null);
   
   // Estados do formulário
   const [nome, setNome] = useState('');
@@ -56,37 +57,60 @@ export default function Disciplinas() {
     }
   };
 
+  const handleEditClick = (disciplina) => {
+    setEditingDisciplina(disciplina);
+    setNome(disciplina.nome);
+    setCargaHoraria(disciplina.cargaHoraria.toString());
+    setNivel(disciplina.nivel);
+    setProfessorId(disciplina.professorId.toString());
+    setMensagem({ texto: '', tipo: '' });
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setEditingDisciplina(null);
+    setNome('');
+    setCargaHoraria('');
+    setNivel('');
+    setProfessorId('');
+    setMensagem({ texto: '', tipo: '' });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMensagem({ texto: '', tipo: '' });
 
-    const novaDisciplina = {
+    const disciplinaData = {
       nome: nome,
-      cargaHoraria: Number(cargaHoraria), // Conversão explícita para número
+      cargaHoraria: Number(cargaHoraria),
       nivel: nivel,
-      professorId: Number(professorId) // Conversão explícita
+      professorId: Number(professorId)
     };
 
+    if (editingDisciplina) {
+      disciplinaData.id = editingDisciplina.id;
+    }
+
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
+      const url = editingDisciplina ? `${API_URL}/${editingDisciplina.id}` : API_URL;
+      const method = editingDisciplina ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method: method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(novaDisciplina)
+        body: JSON.stringify(disciplinaData)
       });
 
       if (response.ok) {
-        setNome('');
-        setCargaHoraria('');
-        setNivel('');
-        setProfessorId('');
-        setIsModalOpen(false);
+        handleClose();
         carregarDisciplinas();
       } else {
         const erroMsg = await response.text();
         setMensagem({ texto: `Erro: ${erroMsg}`, tipo: 'error' });
       }
     } catch (error) {
-      console.error('Erro no POST:', error);
+      console.error('Erro ao salvar disciplina:', error);
       setMensagem({ texto: 'Erro de conexão.', tipo: 'error' });
     }
   };
@@ -130,9 +154,9 @@ export default function Disciplinas() {
         onSearch={handleSearch}
       />
 
-      <DataTable columns={columns} data={disciplinasFormatadas} onDelete={handleDelete} />
+      <DataTable columns={columns} data={disciplinasFormatadas} onEdit={handleEditClick} onDelete={handleDelete} />
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Adicionar disciplina:">
+      <Modal isOpen={isModalOpen} onClose={handleClose} title={editingDisciplina ? "Editar disciplina:" : "Adicionar disciplina:"}>
         {mensagem.texto && (
           <div className={`form-msg ${mensagem.tipo}`}>{mensagem.texto}</div>
         )}
