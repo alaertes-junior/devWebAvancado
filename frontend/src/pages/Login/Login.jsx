@@ -12,9 +12,7 @@ export default function Login({ onLogin }) {
     setError('');
 
     try {
-      // Nota: A URL da API pode variar dependendo do seu ambiente.
-      // Geralmente é http://localhost:5000 ou http://localhost:5242
-      const response = await fetch('http://localhost:5242/api/Auth/login', {
+      const response = await fetch('http://localhost:5195/api/Auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,20 +45,20 @@ export default function Login({ onLogin }) {
           {error && <div className="login-error" style={{ color: 'red', marginBottom: '10px', textAlign: 'center' }}>{error}</div>}
           <div className="login-group">
             <label>E-mail</label>
-            <input 
-              type="email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="login-group">
             <label>Senha</label>
-            <input 
-              type="password" 
-              value={senha} 
-              onChange={(e) => setSenha(e.target.value)} 
-              required 
+            <input
+              type="password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
             />
           </div>
           <button type="submit" className="login-btn">Entrar</button>

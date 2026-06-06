@@ -27,9 +27,21 @@ export default function Alunos() {
     carregarDisciplinas();
   }, []);
 
+  const getHeaders = (hasBody = false) => {
+    const token = localStorage.getItem('token');
+    const headers = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    if (hasBody) {
+      headers['Content-Type'] = 'application/json';
+    }
+    return headers;
+  };
+
   const carregarDisciplinas = async () => {
     try {
-      const response = await fetch(DISC_API_URL);
+      const response = await fetch(DISC_API_URL, { headers: getHeaders() });
       if (response.ok) {
         const data = await response.json();
         setDisciplinas(data.map(d => ({ value: d.id, label: d.nome })));
@@ -45,7 +57,7 @@ export default function Alunos() {
       return;
     }
     try {
-      const response = await fetch(`${API_URL}/disciplina/${disciplinaId}`);
+      const response = await fetch(`${API_URL}/disciplina/${disciplinaId}`, { headers: getHeaders() });
       if (response.ok) {
         const data = await response.json();
         setAlunos(data);
@@ -59,7 +71,7 @@ export default function Alunos() {
 
   const carregarAlunos = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, { headers: getHeaders() });
       if (response.ok) {
         const data = await response.json();
         setAlunos(data);
@@ -75,7 +87,7 @@ export default function Alunos() {
       return;
     }
     try {
-      const response = await fetch(`${API_URL}/${searchValue}`);
+      const response = await fetch(`${API_URL}/${searchValue}`, { headers: getHeaders() });
       if (response.ok) {
         const data = await response.json();
         setAlunos([data]);
@@ -128,7 +140,7 @@ export default function Alunos() {
 
       const response = await fetch(url, {
         method: method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: getHeaders(true),
         body: JSON.stringify(alunoData)
       });
 
@@ -148,7 +160,10 @@ export default function Alunos() {
   const handleDelete = async (id) => {
     if (!window.confirm('Tem certeza que deseja excluir?')) return;
     try {
-      const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${API_URL}/${id}`, { 
+        method: 'DELETE',
+        headers: getHeaders()
+      });
       if (response.ok) {
         carregarAlunos();
       } else {

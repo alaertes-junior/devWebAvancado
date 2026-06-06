@@ -27,9 +27,21 @@ export default function Disciplinas() {
     carregarDisciplinas();
   }, []);
 
+  const getHeaders = (hasBody = false) => {
+    const token = localStorage.getItem('token');
+    const headers = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    if (hasBody) {
+      headers['Content-Type'] = 'application/json';
+    }
+    return headers;
+  };
+
   const carregarDisciplinas = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, { headers: getHeaders() });
       if (response.ok) {
         const data = await response.json();
         setDisciplinas(data);
@@ -45,7 +57,7 @@ export default function Disciplinas() {
       return;
     }
     try {
-      const response = await fetch(`${API_URL}/${searchValue}`);
+      const response = await fetch(`${API_URL}/${searchValue}`, { headers: getHeaders() });
       if (response.ok) {
         const data = await response.json();
         setDisciplinas([data]);
@@ -98,7 +110,7 @@ export default function Disciplinas() {
 
       const response = await fetch(url, {
         method: method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: getHeaders(true),
         body: JSON.stringify(disciplinaData)
       });
 
@@ -126,7 +138,10 @@ export default function Disciplinas() {
   const handleDelete = async (id) => {
     if (!window.confirm('Tem certeza que deseja excluir?')) return;
     try {
-      const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${API_URL}/${id}`, { 
+        method: 'DELETE',
+        headers: getHeaders()
+      });
       if (response.ok) {
         carregarDisciplinas();
       } else {

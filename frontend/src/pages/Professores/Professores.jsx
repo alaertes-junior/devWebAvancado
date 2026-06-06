@@ -23,9 +23,21 @@ export default function Professores() {
     carregarProfessores();
   }, []);
 
+  const getHeaders = (hasBody = false) => {
+    const token = localStorage.getItem('token');
+    const headers = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    if (hasBody) {
+      headers['Content-Type'] = 'application/json';
+    }
+    return headers;
+  };
+
   const carregarProfessores = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, { headers: getHeaders() });
       if (response.ok) {
         const data = await response.json();
         setProfessores(data);
@@ -45,7 +57,7 @@ export default function Professores() {
 
     try {
       // Como o campo diz "Pesquisa por ID", fazemos GET específico
-      const response = await fetch(`${API_URL}/${searchValue}`);
+      const response = await fetch(`${API_URL}/${searchValue}`, { headers: getHeaders() });
       if (response.ok) {
         const data = await response.json();
         // A API retorna um objeto único para GetById, então envelopamos em um array para a tabela
@@ -100,7 +112,7 @@ export default function Professores() {
 
       const response = await fetch(url, {
         method: method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: getHeaders(true),
         body: JSON.stringify(professorData)
       });
 
@@ -120,7 +132,10 @@ export default function Professores() {
   const handleDelete = async (id) => {
     if (!window.confirm('Tem certeza que deseja excluir?')) return;
     try {
-      const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${API_URL}/${id}`, { 
+        method: 'DELETE',
+        headers: getHeaders()
+      });
       if (response.ok) {
         carregarProfessores();
       } else {
