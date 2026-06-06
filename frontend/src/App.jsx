@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MainLayout from "./layouts/MainLayout";
 import Login from "./pages/Login/Login";
 import Professores from "./pages/Professores/Professores";
@@ -12,12 +12,25 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activePage, setActivePage] = useState('Professores');
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsAuthenticated(false);
+  };
+
   if (!isAuthenticated) {
     return <Login onLogin={() => setIsAuthenticated(true)} />;
   }
 
   return (
-    <MainLayout activePage={activePage} setActivePage={setActivePage} onLogout={() => setIsAuthenticated(false)}>
+    <MainLayout activePage={activePage} setActivePage={setActivePage} onLogout={handleLogout}>
       {activePage === 'Professores' && <Professores />}
       {activePage === 'Disciplinas' && <Disciplinas />}
       {activePage === 'Alunos' && <Alunos />}

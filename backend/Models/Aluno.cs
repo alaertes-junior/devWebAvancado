@@ -7,6 +7,7 @@ namespace devWebAvancado.Models
         public string Email { get; set; } = string.Empty;
         public string Cpf { get; set; } = string.Empty;
         public int Idade { get; set; }
+        public string Senha { get; set; } = string.Empty;
         public ICollection<Disciplina> Disciplinas { get; set; } = new List<Disciplina>();
         public ICollection<Nota> Notas { get; set; } = new List<Nota>();
         public ICollection<Presenca> Presencas { get; set; } = new List<Presenca>();
