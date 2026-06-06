@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using devWebAvancado.Models;
 using devWebAvancado.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace devWebAvancado.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class PresencaController : ControllerBase
     {
         private readonly IPresencaRepository _repo;

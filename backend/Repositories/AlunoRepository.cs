@@ -33,15 +33,19 @@ namespace devWebAvancado.Repositories
 
         public void Add(Aluno aluno)
         {
-            if (aluno.Idade > 17 || aluno.Idade < 6)
+            if (aluno.Idade > 17 || aluno.Idade < 15)
             {
-                throw new Exception("Idade do aluno deve ser entre 6 e 17 anos.");
+                throw new Exception("Idade do aluno deve ser entre 15 e 17 anos.");
             }
 
             if (aluno.Nome.Length < 3 || aluno.Nome.Length > 40)
             {
                 throw new Exception("O nome deve ter entre 3 a 40 caracteres.");
             }
+
+            // Vincula o aluno automaticamente a todas as disciplinas
+            var todasDisciplinas = _context.Disciplinas.ToList();
+            aluno.Disciplinas = todasDisciplinas;
 
             _context.Alunos.Add(aluno);
             _context.SaveChanges();
@@ -59,6 +63,7 @@ namespace devWebAvancado.Repositories
             existente.Email = aluno.Email;
             existente.Cpf = aluno.Cpf;
             existente.Idade = aluno.Idade;
+            existente.Senha = aluno.Senha;
 
             _context.SaveChanges();
         }
@@ -69,23 +74,6 @@ namespace devWebAvancado.Repositories
             if (aluno != null)
             {
                 _context.Alunos.Remove(aluno);
-                _context.SaveChanges();
-            }
-        }
-
-        public void Matricular(int alunoId, int disciplinaId)
-        {
-            var aluno = _context.Alunos.Include(a => a.Disciplinas).FirstOrDefault(a => a.Id == alunoId);
-            var disciplina = _context.Disciplinas.Find(disciplinaId);
-
-            if (aluno == null || disciplina == null)
-            {
-                throw new Exception("Aluno ou Disciplina não encontrados.");
-            }
-
-            if (!aluno.Disciplinas.Any(d => d.Id == disciplinaId))
-            {
-                aluno.Disciplinas.Add(disciplina);
                 _context.SaveChanges();
             }
         }

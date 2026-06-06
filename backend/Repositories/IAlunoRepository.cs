@@ -10,6 +10,5 @@ namespace devWebAvancado.Repositories
         void Add(Aluno aluno);
         void Update(Aluno aluno);
         void Delete(int id);
-        void Matricular(int alunoId, int disciplinaId);
     }
 }

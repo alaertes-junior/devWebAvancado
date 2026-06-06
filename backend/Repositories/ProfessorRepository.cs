@@ -44,6 +44,7 @@ namespace devWebAvancado.Repositories
             existente.Nome = professor.Nome;
             existente.Email = professor.Email;
             existente.Cpf = professor.Cpf;
+            existente.Senha = professor.Senha;
             existente.Departamento = professor.Departamento;
 
             _context.SaveChanges();

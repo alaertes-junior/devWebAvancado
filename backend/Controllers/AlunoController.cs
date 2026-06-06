@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using devWebAvancado.Models;
 using devWebAvancado.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace devWebAvancado.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AlunoController : ControllerBase
     {
         private readonly IAlunoRepository _repo;
@@ -66,20 +68,6 @@ namespace devWebAvancado.Controllers
         {
             _repo.Delete(id);
             return Ok("Aluno removido com sucesso");
-        }
-
-        [HttpPost("{alunoId}/matricular/{disciplinaId}")]
-        public IActionResult PostMatricula(int alunoId, int disciplinaId)
-        {
-            try
-            {
-                _repo.Matricular(alunoId, disciplinaId);
-                return Ok("Matrícula realizada com sucesso");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
     }
 }

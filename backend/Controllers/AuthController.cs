@@ -31,12 +31,7 @@ namespace devWebAvancado.Controllers
 
             if (aluno != null)
             {
-                return Ok(new LoginResponseDTO
-                {
-                    Token = GenerateJwtToken(aluno.Email, "Aluno"),
-                    Nome = aluno.Nome,
-                    Role = "Aluno"
-                });
+                return Unauthorized("Acesso negado: apenas o professor administrador pode acessar o sistema.");
             }
 
             // Busca no Professor
@@ -45,12 +40,20 @@ namespace devWebAvancado.Controllers
 
             if (professor != null)
             {
-                return Ok(new LoginResponseDTO
+                var adminEmail = _configuration.GetValue<string>("AdminSettings:Email") ?? "rosario.laerte@up.edu.br";
+                if (professor.Email.Equals(adminEmail, StringComparison.OrdinalIgnoreCase))
                 {
-                    Token = GenerateJwtToken(professor.Email, "Professor"),
-                    Nome = professor.Nome,
-                    Role = "Professor"
-                });
+                    return Ok(new LoginResponseDTO
+                    {
+                        Token = GenerateJwtToken(professor.Email, "Professor"),
+                        Nome = professor.Nome,
+                        Role = "Professor"
+                    });
+                }
+                else
+                {
+                    return Unauthorized("Acesso negado: apenas o professor administrador pode acessar o sistema.");
+                }
             }
 
             return Unauthorized("Credenciais inválidas");
